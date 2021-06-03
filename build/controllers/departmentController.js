@@ -65,6 +65,19 @@ var getDepartmentById = function (req, res, next) { return __awaiter(void 0, voi
         return [2 /*return*/];
     });
 }); };
+var getDepartmentByName = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var name;
+    return __generator(this, function (_a) {
+        name = req.query.q;
+        dbconfig_1.default.query('SELECT * FROM department WHERE deptname = $1', [name], function (error, result) {
+            if (error) {
+                res.send({ message: "Bad Request" }).status(400);
+            }
+            res.send(result.rows).status(200);
+        });
+        return [2 /*return*/];
+    });
+}); };
 var addNewDepartment = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, deptname, deptlocation;
     return __generator(this, function (_b) {
@@ -109,4 +122,4 @@ var deleteDepartmentById = function (req, res, next) { return __awaiter(void 0, 
         return [2 /*return*/];
     });
 }); };
-exports.default = { getDepartments: getDepartments, getDepartmentById: getDepartmentById, addNewDepartment: addNewDepartment, updateDepartment: updateDepartment, deleteDepartmentById: deleteDepartmentById };
+exports.default = { getDepartments: getDepartments, getDepartmentById: getDepartmentById, getDepartmentByName: getDepartmentByName, addNewDepartment: addNewDepartment, updateDepartment: updateDepartment, deleteDepartmentById: deleteDepartmentById };

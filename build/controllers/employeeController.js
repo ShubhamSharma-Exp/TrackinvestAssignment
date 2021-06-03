@@ -42,34 +42,53 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var dbconfig_1 = __importDefault(require("../dbconfig/dbconfig"));
 var NAMESPACE = 'Employ Controller';
 var getEmployees = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var sql, rows, employees;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                sql = "SELECT * FROM employees ORDER BY empid ASC";
-                return [4 /*yield*/, dbconfig_1.default.query(sql)];
-            case 1:
-                rows = (_a.sent()).rows;
-                employees = rows;
-                res.send(employees).status(200);
-                return [2 /*return*/];
-        }
+        dbconfig_1.default.query("SELECT * FROM employees ORDER BY empid ASC", function (error, result) {
+            if (error) {
+                res.send({ message: "Bad Request" }).status(400);
+            }
+            res.send(result.rows).status(200);
+        });
+        return [2 /*return*/];
     });
 }); };
 var getEmployeeById = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, sql, rows, employees;
+    var id;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                id = parseInt(req.params.id);
-                sql = "SELECT * FROM employees WHERE empid = " + id;
-                return [4 /*yield*/, dbconfig_1.default.query(sql)];
-            case 1:
-                rows = (_a.sent()).rows;
-                employees = rows;
-                res.send(employees).status(200);
-                return [2 /*return*/];
-        }
+        id = parseInt(req.params.id);
+        dbconfig_1.default.query('SELECT * FROM employees WHERE empid = $1', [id], function (error, result) {
+            if (error) {
+                res.send({ message: "Bad Request" }).status(400);
+            }
+            res.send(result.rows).status(200);
+        });
+        return [2 /*return*/];
+    });
+}); };
+var getEmployeeByName = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var name;
+    return __generator(this, function (_a) {
+        name = req.query.q;
+        dbconfig_1.default.query('SELECT * FROM employees WHERE empname = $1', [name], function (error, result) {
+            if (error) {
+                res.send({ message: "Bad Request" }).status(400);
+            }
+            res.send(result.rows).status(200);
+        });
+        return [2 /*return*/];
+    });
+}); };
+var getEmployeesOfSameDepartment = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var id;
+    return __generator(this, function (_a) {
+        id = parseInt(req.params.id);
+        dbconfig_1.default.query('SELECT * FROM employees WHERE deptid = $1', [id], function (error, result) {
+            if (error) {
+                res.send({ message: "Bad Request" }).status(400);
+            }
+            res.send(result.rows).status(200);
+        });
+        return [2 /*return*/];
     });
 }); };
 var addNewEmployee = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
@@ -119,4 +138,4 @@ var deleteEmployeeById = function (req, res, next) { return __awaiter(void 0, vo
         return [2 /*return*/];
     });
 }); };
-exports.default = { getEmployees: getEmployees, getEmployeeById: getEmployeeById, addNewEmployee: addNewEmployee, updateEmployee: updateEmployee, deleteEmployeeById: deleteEmployeeById };
+exports.default = { getEmployees: getEmployees, getEmployeeById: getEmployeeById, getEmployeeByName: getEmployeeByName, getEmployeesOfSameDepartment: getEmployeesOfSameDepartment, addNewEmployee: addNewEmployee, updateEmployee: updateEmployee, deleteEmployeeById: deleteEmployeeById };
