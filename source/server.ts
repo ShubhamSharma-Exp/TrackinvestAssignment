@@ -46,7 +46,9 @@ router.use((req, res, next) => {
 router.use('/employees', employeeRoutes);
 router.use('/department', departmentRoutes);
 router.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
+router.use('*', function (req, res) {
+    res.status(404).send({ message: "Page not found!!" });
+});
 
 
 // Error Handling

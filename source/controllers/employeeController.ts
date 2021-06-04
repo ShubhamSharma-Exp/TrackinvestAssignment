@@ -51,6 +51,8 @@ const addNewEmployee = async (req: Request, res: Response, next: NextFunction) =
 
     const { empname, empdob, deptid } = req.body;
     console.log(req.body);
+    console.log(empname,empdob,deptid);
+    console.log(req.body);
     pool.query('INSERT INTO employees (empname,empdob,deptid) VALUES ($1, $2, $3)',[empname,empdob,deptid], (error, result) => {
         if (error) {
             console.log(error);
